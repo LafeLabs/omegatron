@@ -2,6 +2,9 @@
 
 ![](images/qrcode.png)
 
+![](images/omegatron-logo.svg)
+
+
 [Open Source Hardware Instrument](https://github.com/lafelabs/OSHI/) for measuring the current-voltage characteristics of a device between two electrodes.  
 
 ![](images/board-top-photo.jpg)
