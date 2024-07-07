@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <!--
+
+github.com/lafelabs/OSHI/README.md
+
+    -->
+
+<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA4AcAAO/3AADH9wAA7/cAAO/3AADEdwAA7/cAAOw3AADH9wAA7HcAAO/3AADEFwAA7/cAAOAHAAD//wAA" rel="icon" type="image/x-icon">
+
+    <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
+
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script>
+            MathJax.Hub.Config({
+                tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                processEscapes: true,
+                processClass: "mathjax",
+                ignoreClass: "no-mathjax"
+                }
+            });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+        </script>
+
+</head>
+<body>    
+<div id = "scrollscroll"></div>
+<a id = "editlink" href= "readme-editor.html">README EDITOR</a>
+
+<a id = "homelink" href= "index.html">HOME</a>
+
+
+<div id = "title"></div>
+<div id= "dirscroll"></div>
+
+<script>
+
+
+scroll = "";
+rawhtml = "";
+var converter = new showdown.Converter();
+// for more on options see here:
+// https://github.com/showdownjs/showdown/wiki/Showdown-Options
+converter.setOption('literalMidWordUnderscores', 'true');
+converter.setOption('tables', 'true')
+    
+filename = "README.md";
+loadscroll("README.md");
+
+document.getElementById("title").innerHTML = filename;
+
+newscroll = "";
+function loadscroll(scrollname){
+    filename = scrollname;
+
+    document.getElementById("scrollscroll").innerHTML = "";
+    document.getElementById("scrollscroll").style.display = "block";
+    var httpc666 = new XMLHttpRequest();
+    httpc666.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            scroll = this.responseText;
+            newscroll = scroll.replace(/]\(images/g, "](../" + currentdir + "/images");
+
+            rawhtml = converter.makeHtml(newscroll);
+            document.getElementById("scrollscroll").innerHTML = rawhtml;
+
+            			MathJax.Hub.Typeset();//tell Mathjax to update the math
+    //			MathJax.Hub.Typeset();//tell Mathjax to update the math
+        }
+    };
+    httpc666.open("GET", "fileloader.php?filename=" + scrollname, true);
+    httpc666.send();
+    //MathJax.Hub.Typeset();//tell Mathjax to update the math
+}
+
+
+currentdir = "readme";
+
+readmefiles = [];
+var httpc9 = new XMLHttpRequest();
+    httpc9.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        readmefiles = JSON.parse(this.responseText);
+        for(var index = 0;index < readmefiles.length;index++) {
+            if(readmefiles[index] != "php" && readmefiles[index] != "data"){
+                var newdiv = document.createElement("DIV");
+                newdiv.innerHTML = "../" +  readmefiles[index] + "/README.md";
+                newdiv.className = "readmelink";
+                document.getElementById("dirscroll").appendChild(newdiv);
+                newdiv.onclick = function(){
+                    currentdir = this.innerHTML.split("/README.md")[0].split("../")[1];
+                    loadscroll(this.innerHTML);
+                    document.getElementById("title").innerHTML = this.innerHTML;
+
+                }
+            }
+        }
+    }
+};
+httpc9.open("GET", "updir.php", true);
+httpc9.send();
+
+</script>
+<style>
+body{
+    overflow:hidden;
+    background-color:white;
+    font-family:Arial;
+}
+a{
+    color:blue;
+}
+#scrollscroll{
+    padding-left:1em;
+    padding-right:1em;
+    left:0px;
+    bottom:0px;
+    position:absolute;
+    overflow:scroll;
+    font-size:2em;
+    width:50%;
+    display:none;
+    z-index:-3;
+}
+#dirscroll{
+    padding-left:1em;
+    padding-right:1em;
+    right:0px;
+    bottom:0px;
+    position:absolute;
+    overflow:scroll;
+    font-size:2em;
+    top:4em;
+    width:40%;
+    z-index:-3;
+}
+#title{
+    position:absolute;
+    right:0px;
+    top:1.5em;
+    font-size:2em;
+    z-index:-1;
+}
+
+.readmelink{
+    border:solid;
+    border-radius:10px;
+    padding: 5px 5px 5px 5px;
+    margin-top:5px;
+    margin-bottom:5px;
+    cursor:pointer;
+}
+.readmelink:hover{
+    background-color:green;
+}
+.readmelink:active{
+    background-color:yellow;
+}
+
+pre{
+    overflow:scroll;
+}
+#scrollscroll img{
+    max-width:50%;
+    display:block;
+    margin:auto;
+    background-color:none;
+}
+h1,h2,h3,h4{
+    text-align:center;
+}
+
+#editlink{
+    position:absolute;
+    right:0em;
+    top:0px;
+    font-size:2em;
+}
+#homelink{
+    position:absolute;
+    right:10em;
+    top:0px;
+    font-size:2em;
+}
+
+@media only screen and (orientation: landscape) {
+    #scrollscroll{
+        top:0px;
+        right:100px;
+    }
+}
+
+@media only screen and (orientation: portrait) {
+    #scrollscroll{
+        top:100px;
+        right:0px;
+    }
+}
+</style>
+</body>
+</html>
