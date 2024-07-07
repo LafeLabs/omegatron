@@ -1,6 +1,6 @@
 <?php
 
-$dnaurl = "https://raw.githubusercontent.com/LafeLabs/OSHI/main/data/dna.txt";
+$dnaurl = "https://raw.githubusercontent.com/LafeLabs/omegatron/main/data/dna.txt";
 
 if(isset($_GET["dna"])){
     $dnaurl = $_GET["dna"];
@@ -13,9 +13,11 @@ $dna = json_decode($dnaraw);
 mkdir("data");
 mkdir("php");
 mkdir("images");
+mkdir("omegatron-data");
+mkdir("omegatron-plots");
 
 
-copy("https://raw.githubusercontent.com/LafeLabs/OSHI/main/php/replicator.txt","replicator.php");
+copy("https://raw.githubusercontent.com/LafeLabs/omegatron/main/php/replicator.txt","replicator.php");
 
 
 foreach($dna->html as $value){
