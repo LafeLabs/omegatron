@@ -1,10 +1,12 @@
 {
     "html": [
         "README.md",
+        "data.html",
         "fork.html",
         "geometron.js",
         "index.html",
         "omegatron.html",
+        "plots.html",
         "readme.html",
         "readmeeditor.html",
         "trashmagic.css",

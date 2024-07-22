@@ -3,139 +3,235 @@
 <head>
     <meta charset="utf-8">
 
-    <!--
+        <!--
 
-github.com/lafelabs/OSHI/README.md
 
     -->
+    
+<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA4A8AAO/vAADqrwAA6q8AAOqvAADqrwAA6q8AAOqvAADqrwAA7+8AAMAHAADf9wAAwAcAAPu/AAD4PwAA" rel="icon" type="image/x-icon" />
 
-<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA4AcAAO/3AADH9wAA7/cAAO/3AADEdwAA7/cAAOw3AADH9wAA7HcAAO/3AADEFwAA7/cAAOAHAAD//wAA" rel="icon" type="image/x-icon">
 
-    <!--Stop Google:-->
+       <!--Stop Google:-->
     <META NAME="robots" CONTENT="noindex,nofollow">
+   <title>OMEGATRON</title>    
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
 
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.js"></script>
-
-<!--       un comment to use math
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script>
-            MathJax.Hub.Config({
-                tex2jax: {
-                inlineMath: [['$','$'], ['\\(','\\)']],
-                processEscapes: true,
-                processClass: "mathjax",
-                ignoreClass: "no-mathjax"
-                }
-            });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
-        </script>
-    -->
-
-    
 </head>
-<body>    
-<div id = "scrollscroll"></div>
-<a id = "editlink" href= "readmeeditor.html">EDIT</a>
+<body>
 
-<a id = "homelink" href= "index.html">HOME</a>
+<a id= "omegalink" href = "https://github.com/lafelabs/omegatron/">
+    <img src = "https://raw.githubusercontent.com/LafeLabs/omegatron/main/images/omegatron-logo.svg"/>
+</a>
 
+   <input id = "datainput"/>
+
+<a id = "plotlink" href = "plots.html">PLOTS</a>
+<a id = "datalink" href = "data.html">DATA</a>
+
+<textarea id = "jsonio"></textarea>
 <script>
+document.getElementById("datainput").value = "";
+document.getElementById("datainput").select();
 
+squareWidth = 800;
 
-scroll = "";
-rawhtml = "";
-var converter = new showdown.Converter();
-// for more on options see here:
-// https://github.com/showdownjs/showdown/wiki/Showdown-Options
-converter.setOption('literalMidWordUnderscores', 'true');
-converter.setOption('tables', 'true')
+timeindex = 0;
+
+function setup() {
+    createCanvas(squareWidth,squareWidth);
+//    background(159,135,103);
+    background(20);
+    stroke(0,255,0);
+    fill(0,255,0);
+
+    strokeWeight(1);
+    line(width/2  + map(1, -1.5, 1.5, -width/2, width/2),0,width/2  + map(1, -1.5, 1.5, -width/2, width/2),height);
+    line(width/2  + map(-1, -1.5, 1.5, -width/2, width/2),0,width/2  + map(-1, -1.5, 1.5, -width/2, width/2),height);    
     
-filename = "README.md";
-loadscroll("README.md");
+    
+    line(0,height/2 + map(100, -150, 150, -height/2, height/2),width,height/2 + map(100, -150, 150, -height/2, height/2))
+
+    line(0,height/2 + map(-100, -150, 150, -height/2, height/2),width,height/2 + map(-100, -150, 150, -height/2, height/2))    
+    
+    strokeWeight(3);
+    line(width/2,0,width/2,height);    
+    line(0,height/2,width,height/2);    
+    textSize(35);
+    strokeWeight(1);
+    text("current [microamperes]",width/2 + 10,40);
+    text("100 microA",150,height/2 + map(-100, -150, 150, -height/2, height/2) - 10);
+    
+    text("-100 microA",150,height/2 - map(-100, -150, 150, -height/2, height/2) - 10);
+
+    textAlign(RIGHT);
+    text("voltage [volts]",width - 10,height/2 - 25);
+    text("1 volt",width - 40,height - 25);
+    textAlign(LEFT);
+    text("-1 volt", 30,height - 25);
+
+    strokeWeight(10);
+//      image(img, 0, 0,squareWidth-50,squareWidth-70);
 
 
-function loadscroll(scrollname){
-    filename = scrollname;
-
-    document.getElementById("scrollscroll").innerHTML = "";
-    document.getElementById("scrollscroll").style.display = "block";
-    var httpc666 = new XMLHttpRequest();
-    httpc666.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            scroll = this.responseText;
-            rawhtml = converter.makeHtml(scroll);
-            document.getElementById("scrollscroll").innerHTML = rawhtml;
-
-            //			MathJax.Hub.Typeset();//tell Mathjax to update the math
-    //			MathJax.Hub.Typeset();//tell Mathjax to update the math
-        }
-    };
-    httpc666.open("GET", "fileloader.php?filename=" + scrollname, true);
-    httpc666.send();
-    //MathJax.Hub.Typeset();//tell Mathjax to update the math
 }
 
 
+function draw() {
+  
+  stroke(0);
+
+    
+}
+
+
+metadata = "omegatron IV curve tracer";
+        //add a input for the metadata
+
+Iwave = [];
+Vwave = [];
+
+
+
+document.getElementById("datainput").onchange = function(){
+    rawtext =  this.value;
+    this.value = "";
+    I = parseFloat(rawtext.split(" volts")[1].split(" miroamperes")[0]);
+    V = parseFloat(rawtext.split(" volts")[0])
+    Vwave.push(V);
+    Iwave.push(I);
+
+    clear();
+//    background(255);
+    background(20);
+    stroke(0,255,0);
+    strokeWeight(3);
+    line(width/2,0,width/2,height);    
+    line(0,height/2,width,height/2);    
+
+    strokeWeight(1);
+//    stroke(0);
+    textSize(10);
+    line(width/2,0,width/2,height);    
+
+    strokeWeight(4);
+    fill(0,255,0);
+    circle(width/2  + map(V, -1.5, 1.5, -width/2, width/2),height/2 + map(I, -150, 150, -height/2, height/2),20);
+    
+
+    beginShape();
+    noFill();
+    for(var i = 0; i < Iwave.length; i++){
+        vertex(width/2  + map(Vwave[i], -1.5, 1.5, -width/2, width/2),height/2 + map(Iwave[i], -150, 150, -height/2, height/2));
+    }
+    endShape();
+
+
+
+    timeindex++;
+    if(timeindex > 1000){
+        timeindex = 0;
+        data = {};
+        data.metadata = metadata;
+        data.I = Iwave;
+        data.V = Vwave;
+
+        document.getElementById("jsonio").value = JSON.stringify(data,null,"    ");
+        //save JSON data file in thermotron_data/
+        //save png file in thermotron_plots/
+        //load all the plots in a plot feed, click on them to get data, all saved by unix time, which marks end of timewave
+        png64 = document.getElementById("defaultCanvas0").toDataURL("image/png");
+        var timestamp = Math.round((new Date().getTime())/1000).toString();
+
+        var httpc = new XMLHttpRequest();
+        var url = "pngsave.php";        
+        httpc.open("POST", url, true);
+        httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        httpc.send("data="+encodeURIComponent(png64.substring(22))+"&filename=omegatron_plots/omegatron_plot_" + timestamp +  ".png");//send text to filesaver.php
+         //location.reload(); 
+
+        var url = "filesaver.php";        
+        var httpc2 = new XMLHttpRequest();
+        httpc2.open("POST", url, true);
+        httpc2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        httpc2.send("data="+encodeURIComponent(JSON.stringify(data,null,"    "))+"&filename=omegatron_data/omegatron_data_" + timestamp +".txt");//send text to filesaver.php
+         
+        Iwave = [];
+        Vwave = [];
+    }
+}
+
 </script>
 <style>
-body{
-    overflow:hidden;
-    background-color:white;
-    font-family:Arial;
+body, table{
+    font-family:Comic Sans MS;
+}
+input{
+    width:40em;
+    font-size:1em;
+    font-family:courier;
+    background-color:black;
+    color:#00ff00;
+}
+textarea{
+    font-family:courier;
+    background-color:black;
+    color:#00ff00;
+    display:none;
+}
+main{
+    position:absolute;
+    right:5px;
+    bottom:5px;
+}
+main canvas{
+    border:solid;
 }
 a{
     color:blue;
 }
-#scrollscroll{
-    padding-left:1em;
-    padding-right:1em;
+#datainput{
+    position:absolute;
+    right:5px;
+    top:5px;
+}
+table{
+    font-size:3em;
+}
+#row1{
+    color:red;
+}
+#row2{
+    color:green;
+}
+#row3{
+    color:blue;
+}
+#row4{
+    color:purple;
+}
+#omegalink img{
+    position:absolute;
     left:0px;
-    bottom:0px;
-    position:absolute;
-    overflow:scroll;
-    font-size:2em;
-    display:none;
-    z-index:-3;
-}
-pre{
-    overflow:scroll;
-}
-#scrollscroll img{
-    max-width:50%;
-    display:block;
-    margin:auto;
-    background-color:none;
-}
-h1,h2,h3,h4{
-    text-align:center;
-}
-
-#editlink{
-    position:absolute;
-    right:0px;
     top:0px;
-    font-size:2em;
+    width:200px;
 }
-#homelink{
+#datalink{
     position:absolute;
-    right:0px;
-    top:4em;
-    font-size:2em;
-}
+    left:1em;
+    bottom:5em;
+    font-size:1.5em;
 
-@media only screen and (orientation: landscape) {
-    #scrollscroll{
-        top:0px;
-        right:100px;
-    }
+    
 }
-
-@media only screen and (orientation: portrait) {
-    #scrollscroll{
-        top:100px;
-        right:0px;
-    }
+#plotlink{
+    position:absolute;
+    left:1em;
+    bottom:10em;
+    font-size:1.5em;
 }
 </style>
 </body>
 </html>
+
+
