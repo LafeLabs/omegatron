@@ -26,6 +26,15 @@
  - [Raspberry Pi Pico(1 per omegatron)](https://www.amazon.com/dp/B09437S9X4)
  - [Micro USB cable(1 per omegatron)](https://www.amazon.com/dp/B08J9WNP6Z)
 
+![](images/one.jpg)
+![](images/two.jpg)
+![](images/three.jpg)
+![](images/four.jpg)
+![](images/five.jpg)
+![](images/six.jpg)
+![](images/seven.jpg)
+![](images/eight.jpg)
+
 ## code.py
 
 ```
