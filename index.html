@@ -108,7 +108,36 @@ document.getElementById("datainput").onchange = function(){
     strokeWeight(3);
     line(width/2,0,width/2,height);    
     line(0,height/2,width,height/2);    
+    background(20);
+    stroke(0,255,0);
+    fill(0,255,0);
 
+    strokeWeight(1);
+    line(width/2  + map(1, -1.5, 1.5, -width/2, width/2),0,width/2  + map(1, -1.5, 1.5, -width/2, width/2),height);
+    line(width/2  + map(-1, -1.5, 1.5, -width/2, width/2),0,width/2  + map(-1, -1.5, 1.5, -width/2, width/2),height);    
+    
+    
+    line(0,height/2 + map(100, -150, 150, -height/2, height/2),width,height/2 + map(100, -150, 150, -height/2, height/2))
+
+    line(0,height/2 + map(-100, -150, 150, -height/2, height/2),width,height/2 + map(-100, -150, 150, -height/2, height/2))    
+    
+    strokeWeight(3);
+    line(width/2,0,width/2,height);    
+    line(0,height/2,width,height/2);    
+    textSize(35);
+    strokeWeight(1);
+    text("current [microamperes]",width/2 + 10,40);
+    text("100 microA",150,height/2 + map(-100, -150, 150, -height/2, height/2) - 10);
+    
+    text("-100 microA",150,height/2 - map(-100, -150, 150, -height/2, height/2) - 10);
+
+    textAlign(RIGHT);
+    text("voltage [volts]",width - 10,height/2 - 25);
+    text("1 volt",width - 40,height - 25);
+    textAlign(LEFT);
+    text("-1 volt", 30,height - 25);
+    
+    
     strokeWeight(1);
 //    stroke(0);
     textSize(10);
